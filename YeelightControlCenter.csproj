@@ -76,8 +76,8 @@
     <Reference Include="Xceed.Wpf.Toolkit, Version=3.7.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
       <HintPath>packages\Extended.Wpf.Toolkit.3.7.0\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
     </Reference>
-    <Reference Include="YeelightAPI, Version=1.5.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\YeelightAPI.1.5.2\lib\net47\YeelightAPI.dll</HintPath>
+    <Reference Include="YeelightAPI, Version=1.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\YeelightAPI.1.7.0\lib\net47\YeelightAPI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
