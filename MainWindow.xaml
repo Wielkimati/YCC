@@ -49,6 +49,11 @@
                                                       HorizontalAlignment="Center"
                                                       />
                                 </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsEnabled" Value="True">
+                                        <Setter Property="Foreground" Value="#FFFFFF"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
@@ -60,13 +65,9 @@
                     <Button Name="PowerButton"  Content="Turn Off/On" HorizontalAlignment="Left" Height="36" Margin="10,10,0,0" VerticalAlignment="Top" Width="117"/>
                     <Image HorizontalAlignment="Left" Height="85" VerticalAlignment="Top" Width="76" Source="Resources/figured_icon.png" Margin="0,81,0,0"/>
 
-                    <Label Content="Color" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="10,192,10,165" Width="768" 
-                           Foreground="#FFFFFF" Background="#333333"/>
-                    <Label Content="Brightness" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="10,291,10,66" Width="768"
-                           Foreground="#FFFFFF" Background="#333333"/>
-
-                    <Slider Name="BrightnessSlider" Margin="10,331,10,26" Minimum="0"  Maximum="100" TickFrequency="10" TickPlacement="BottomRight" IsSnapToTickEnabled="True" Background="#333333" />
-                    <xctk:ColorPicker x:Name="ColorPicker" Margin="10,232,10,125" Background="#333333" BorderBrush="#333333"/>
+                    <Slider Name="BrightnessSlider" Minimum="0"  Maximum="100" TickFrequency="10" IsSnapToTickEnabled="True" Background="#333333" 
+                            Height="18"/>
+                    <xctk:ColorPicker x:Name="ColorPicker" Margin="474,121,123,226" Background="#333333" BorderBrush="#333333"/>
                 </Grid>
             </TabItem>
 
@@ -77,8 +78,8 @@
             <TabItem Header="Settings">
                 <Grid>
                     <Button Name="ConnectionButton" Content="Connect to Device" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="117" Height="38"/>
-                    <Border BorderBrush="#bb86fc" Background="#333333"  BorderThickness="1,1,1,1" HorizontalAlignment="Center" Height="38" Margin="308,10,10,0" VerticalAlignment="Top" Width="470">
-                        <TextBlock Name="DevOutputTextBlock" TextWrapping="Wrap" Text="Dev Output" Margin="5,0,5,0" TextAlignment="Center" VerticalAlignment="Center"/>
+                    <Border BorderBrush="#bb86fc" Background="#333333"  BorderThickness="2,1,2,1" HorizontalAlignment="Center" Height="38" Margin="258,115,185,0" VerticalAlignment="Top" Width="345">
+                        <TextBlock Name="DevOutputTextBlock" TextWrapping="Wrap" Text="Dev Output" Margin="9,10" TextAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                 </Grid>
             </TabItem>
