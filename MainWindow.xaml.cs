@@ -1,7 +1,9 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Media;
 using YeelightAPI;
+using YeelightControlCenter.Properties;
 
 namespace YeelightControlCenter
 {
@@ -16,10 +18,64 @@ namespace YeelightControlCenter
 		{
 			InitializeComponent();
 
-			Button1.Click += Button1OnClick;
-			Button2.Click += Button2OnClick;
+			PowerButton.Click += TogglePower;
+			ConnectionButton.Click += ConnectDevices;
 			BrightnessSlider.ValueChanged += BrightnessSlider_ValueChanged;
 			ColorPicker.SelectedColorChanged += ColorPickerOnSelectedColorChanged;
+		}
+
+		#region Main Window Events
+		private void MainWindow_OnInitialized(object sender, EventArgs eventArgs)
+		{
+			ConnectDevices(sender, null);
+		}
+
+		private void MainWindow_OnClosing(object sender, CancelEventArgs e)
+		{
+			Settings.Default.Save();
+		}
+		#endregion
+
+		#region Other Events
+		private void BrightnessSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		{
+			_device.SetBrightness((int)BrightnessSlider.Value);
+		}
+
+		private void ColorPickerOnSelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
+		{
+			if (ColorPicker.SelectedColor != null)
+			{
+				var color = ColorPicker.SelectedColor.Value;
+				_device.SetRGBColor(color.R, color.G, color.B);
+			}
+		}
+		#endregion
+
+		#region Yeelight Related Methods
+		private void TogglePower(object sender, EventArgs eventArgs)
+		{
+			DevOutputTextBlock.Text = $"{_device.Hostname} Power Toggled!";
+
+			_device.Toggle();
+		}
+
+		private void ConnectDevices(object sender, EventArgs eventArgs)
+		{
+			ConnectDevicesAsync();
+		}
+
+		private async void ConnectDevicesAsync()
+		{
+			DevOutputTextBlock.Text = string.Empty;
+			_device = new Device(Settings.Default.LighbulbAddress);
+
+			await _device.Connect();
+
+			var x = _device.IsConnected ? "Connected" : "Connection Failed";
+			DevOutputTextBlock.Text += $"Status: {x} == {_device.Hostname}";
+
+			BrightnessSlider.Value = GetCurrentDeviceBrightness(_device);
 		}
 
 		private static int GetCurrentDeviceBrightness(Device device)
@@ -40,45 +96,6 @@ namespace YeelightControlCenter
 
 			return 0;
 		}
-
-		private void ColorPickerOnSelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
-		{
-			if (ColorPicker.SelectedColor != null)
-			{
-				var color = ColorPicker.SelectedColor.Value;
-				_device.SetRGBColor(color.R, color.G, color.B);
-			}
-		}
-
-		private void BrightnessSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-		{
-			_device.SetBrightness((int)BrightnessSlider.Value);
-		}
-
-		private void Button2OnClick(object sender, RoutedEventArgs e)
-		{
-			ConnectDevices();
-		}
-
-		private async void ConnectDevices()
-		{
-			Text1.Text = string.Empty;
-			var connectionAddress = string.Join("", "192.168.0.", TextBoxIp.Text);
-			_device = new Device(connectionAddress);
-
-			await _device.Connect();
-
-			var x = _device.IsConnected ? "Connected" : "Connection Failed";
-			Text1.Text += $"Status: {x} == {_device.Hostname}";
-
-			BrightnessSlider.Value = GetCurrentDeviceBrightness(_device);
-		}
-
-		private void Button1OnClick(object sender, RoutedEventArgs e)
-		{
-			Text1.Text = $"{_device.IsConnected.ToString()} Weszło!";
-
-			_device.Toggle();
-		}
+		#endregion
 	}
 }

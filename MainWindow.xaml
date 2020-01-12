@@ -6,22 +6,84 @@
         xmlns:local="clr-namespace:YeelightControlCenter"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="Yeelight Control Center" Height="450" Width="800" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
-    <Grid>
-        <Grid HorizontalAlignment="Left" Height="399" VerticalAlignment="Top" Width="772" Margin="10,10,0,0">
-            <Button Name = "Button1"  Content="Turn Off/On" HorizontalAlignment="Left" Height="36" Margin="10,10,0,0" VerticalAlignment="Top" Width="117"/>
-            <TextBlock x:Name ="Text1" HorizontalAlignment="Left" Margin="252,32,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="87" Width="510" FontSize="15"></TextBlock>
-            <Button Name="Button2" Content="Connect to Device" HorizontalAlignment="Left" Margin="10,51,0,0" VerticalAlignment="Top" Width="117" Height="38"/>
-            <Slider Name="BrightnessSlider" HorizontalAlignment="Left" Margin="0,375,0,0" VerticalAlignment="Top" Width="772" Maximum="100" Minimum="0" IsSnapToTickEnabled="True" TickFrequency="10" TickPlacement="BottomRight"/>
-            <Label Content="Brightness" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="0,341,0,0" VerticalAlignment="Top" Width="772" BorderBrush="Black" BorderThickness="2"/>
-            <xctk:ColorPicker Name="ColorPicker" Margin="0,311,0,63" />
-            <Label Content="Color" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="0,276,0,0" VerticalAlignment="Top" Width="772" RenderTransformOrigin="0.506,-0.758" BorderBrush="Black" BorderThickness="2" />
-            <Border BorderBrush="Black" BorderThickness="2" Margin="244,32,10,280"/>
-            <Label Content="Dev Output" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="244,6,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.396,-0.164" Width="518"/>
-            <TextBox Name="TextBoxIp"  HorizontalAlignment="Left" Height="17" Margin="73,98,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="41" Text="200"/>
-            <Label Content="192.168.0." HorizontalContentAlignment="Right" HorizontalAlignment="Left" Margin="10,94,0,0" VerticalAlignment="Top" Width="63"/>
-            <Image HorizontalAlignment="Left" Height="65" Margin="0,211,0,0" VerticalAlignment="Top" Width="68" Source="Resources/figured_icon.png"/>
-        </Grid>
+        Title="Yeelight Control Center" Height="450" Width="800" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" 
+        Background="#121212" BorderBrush="#121212" 
+        Initialized="MainWindow_OnInitialized" Closing="MainWindow_OnClosing">
+
+    <Grid Background="#121212">
+        <TabControl Background="#121212" BorderBrush="#121212">
+
+            <TabControl.Resources>
+                <Style TargetType="TabItem">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="TabItem">
+                                <Border Name="Border" BorderThickness="1,1,1,0" BorderBrush="#bb86fc" CornerRadius="0,0,0,0" Margin="1,0" MinWidth="150">
+                                    <ContentPresenter x:Name="ContentSite"
+                                                      VerticalAlignment="Center"
+                                                      HorizontalAlignment="Center"
+                                                      ContentSource="Header"
+                                                      Margin="10,2"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter TargetName="Border" Property="Background" Value="#bb86fc" />
+                                        <Setter Property="Foreground" Value="#FFFFFF"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="False">
+                                        <Setter TargetName="Border" Property="Background" Value="#333333" />
+                                        <Setter Property="Foreground" Value="#FFFFFF"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                <Style TargetType="Button">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border Name="Border" BorderThickness="1,1,1,1" BorderBrush="Transparent" CornerRadius="10,10,10,10" Margin="0,0" Background="#bb86fc">
+                                    <ContentPresenter Name="ContentSite"
+                                                      VerticalAlignment="Center"
+                                                      HorizontalAlignment="Center"
+                                                      />
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </TabControl.Resources>
+
+            <TabItem Header="Yeelight Controls" AllowDrop="False" >
+                <Grid>
+                    <Button Name="PowerButton"  Content="Turn Off/On" HorizontalAlignment="Left" Height="36" Margin="10,10,0,0" VerticalAlignment="Top" Width="117"/>
+                    <Image HorizontalAlignment="Left" Height="85" VerticalAlignment="Top" Width="76" Source="Resources/figured_icon.png" Margin="0,81,0,0"/>
+
+                    <Label Content="Color" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="10,192,10,165" Width="768" 
+                           Foreground="#FFFFFF" Background="#333333"/>
+                    <Label Content="Brightness" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="10,291,10,66" Width="768"
+                           Foreground="#FFFFFF" Background="#333333"/>
+
+                    <Slider Name="BrightnessSlider" Margin="10,331,10,26" Minimum="0"  Maximum="100" TickFrequency="10" TickPlacement="BottomRight" IsSnapToTickEnabled="True" Background="#333333" />
+                    <xctk:ColorPicker x:Name="ColorPicker" Margin="10,232,10,125" Background="#333333" BorderBrush="#333333"/>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Game Controls">
+                <Image Source="Resources/Tohru.png"/>
+            </TabItem>
+
+            <TabItem Header="Settings">
+                <Grid>
+                    <Button Name="ConnectionButton" Content="Connect to Device" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="117" Height="38"/>
+                    <Border BorderBrush="#bb86fc" Background="#333333"  BorderThickness="1,1,1,1" HorizontalAlignment="Center" Height="38" Margin="308,10,10,0" VerticalAlignment="Top" Width="470">
+                        <TextBlock Name="DevOutputTextBlock" TextWrapping="Wrap" Text="Dev Output" Margin="5,0,5,0" TextAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </Grid>
+            </TabItem>
+
+        </TabControl>
     </Grid>
 
 </Window>
