@@ -20,6 +20,9 @@ namespace YeelightControlCenter
 
 			PowerButton.Click += TogglePower;
 			ConnectionButton.Click += ConnectDevices;
+			DayModeButton.Click += DayModeShortcut;
+			NightModeButton.Click += NightModeShortcut;
+
 			BrightnessSlider.ValueChanged += BrightnessSlider_ValueChanged;
 			ColorPicker.SelectedColorChanged += ColorPickerOnSelectedColorChanged;
 		}
@@ -50,6 +53,20 @@ namespace YeelightControlCenter
 				_device.SetRGBColor(color.R, color.G, color.B);
 			}
 		}
+
+		private void DayModeShortcut(object sender, EventArgs eventArgs)
+		{
+			_device.SetRGBColor(255, 255, 255);
+			_device.SetBrightness(100);
+			_device.SetColorTemperature(3500);
+		}
+
+		private void NightModeShortcut(object sender, EventArgs eventArgs)
+		{
+			_device.SetRGBColor(167, 508, 48);
+			_device.SetBrightness(1);
+			_device.SetColorTemperature(3500);
+		}
 		#endregion
 
 		#region Yeelight Related Methods
@@ -71,9 +88,10 @@ namespace YeelightControlCenter
 			_device = new Device(Settings.Default.LighbulbAddress);
 
 			await _device.Connect();
+			//var musicModeStatus = await _device.StartMusicMode(_device.Hostname, _device.Port);
 
-			var x = _device.IsConnected ? "Connected" : "Connection Failed";
-			DevOutputTextBlock.Text += $"Status: {x} == {_device.Hostname}";
+			var isDeviceConnected = _device.IsConnected ? "Connected" : "Connection Failed";
+			//DevOutputTextBlock.Text += $"Status: {isDeviceConnected} == {_device.Hostname}\n{musicModeStatus}";
 
 			BrightnessSlider.Value = GetCurrentDeviceBrightness(_device);
 		}

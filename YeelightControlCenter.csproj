@@ -146,9 +146,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\figured_icon.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
+    <Resource Include="Resources\figured_icon.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
@@ -164,6 +162,13 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Tohru.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Day Mode Icon.png" />
+    <Resource Include="Resources\Night Mode Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
