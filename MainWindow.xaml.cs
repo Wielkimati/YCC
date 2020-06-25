@@ -1,22 +1,37 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
+using Hardcodet.Wpf.TaskbarNotification;
 using YeelightAPI;
 using YeelightControlCenter.Properties;
 
 namespace YeelightControlCenter
 {
-	/// <summary>
-	/// Interaction logic for MainWindow.xaml
-	/// </summary>
 	public partial class MainWindow : Window
 	{
 		private Device _device;
+		private TaskbarIcon taskbarIcon;
 
 		public MainWindow()
 		{
 			InitializeComponent();
+
+			taskbarIcon = (TaskbarIcon)FindResource("YCCTaskbarIcon");
+			taskbarIcon.ContextMenu = new ContextMenu()
+			{
+				Items = { 
+					new MenuItem() { Header = "Open YCC", Name = "MenuItem_OpenYCC"},
+					new MenuItem() { Background = Brushes.Black, IsEnabled = false, Height = 5},
+					new MenuItem() { Header = "Day Mode", Name = "MenuItem_DayMode" },
+					new MenuItem() { Header = "Night Mode", Name = "MenuItem_NightMode" },
+					new MenuItem() { Background = Brushes.Black, IsEnabled = false, Height = 5},
+					new MenuItem() { Header = "Exit YCC", Name = "MenuItem_ExitYCC" }
+				}
+			};
+
+			taskbarIcon.TrayMouseDoubleClick += TaskbarIconOnTray_MouseDoubleClick;
 
 			PowerButton.Click += TogglePower;
 			ConnectionButton.Click += ConnectDevices;
@@ -37,6 +52,26 @@ namespace YeelightControlCenter
 		{
 			Settings.Default.Save();
 		}
+
+		private void MainWindow_OnStateChanged(object sender, EventArgs e)
+		{
+			ShowInTaskbar = WindowState != WindowState.Minimized;
+		}
+		#endregion
+		
+		#region Taskbar Related Events
+		private void TaskbarIconOnTray_MouseDoubleClick(object sender, RoutedEventArgs e)
+		{
+			if (WindowState == WindowState.Minimized)
+			{
+				WindowState = WindowState.Normal;
+			}
+		}
+
+		private void TaskBarIconOnTray_OpenYCC(object sender, RoutedEventArgs e)
+		{
+			throw new NotImplementedException();
+		}
 		#endregion
 
 		#region Other Events
@@ -53,7 +88,9 @@ namespace YeelightControlCenter
 				_device.SetRGBColor(color.R, color.G, color.B);
 			}
 		}
+		#endregion
 
+		#region Yeelight Related Methods
 		private void DayModeShortcut(object sender, EventArgs eventArgs)
 		{
 			_device.SetRGBColor(255, 255, 255);
@@ -67,9 +104,7 @@ namespace YeelightControlCenter
 			_device.SetBrightness(1);
 			_device.SetColorTemperature(3500);
 		}
-		#endregion
 
-		#region Yeelight Related Methods
 		private void TogglePower(object sender, EventArgs eventArgs)
 		{
 			DevOutputTextBlock.Text = $"{_device.Hostname} Power Toggled!";
@@ -88,10 +123,9 @@ namespace YeelightControlCenter
 			_device = new Device(Settings.Default.LighbulbAddress);
 
 			await _device.Connect();
-			//var musicModeStatus = await _device.StartMusicMode(_device.Hostname, _device.Port);
 
 			var isDeviceConnected = _device.IsConnected ? "Connected" : "Connection Failed";
-			//DevOutputTextBlock.Text += $"Status: {isDeviceConnected} == {_device.Hostname}\n{musicModeStatus}";
+			DevOutputTextBlock.Text += $"Status: {isDeviceConnected} == {_device.Hostname}";
 
 			BrightnessSlider.Value = GetCurrentDeviceBrightness(_device);
 		}
@@ -115,5 +149,6 @@ namespace YeelightControlCenter
 			return 0;
 		}
 		#endregion
+
 	}
 }

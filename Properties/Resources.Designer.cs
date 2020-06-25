@@ -83,16 +83,6 @@ namespace YeelightControlCenter.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap icon {
-            get {
-                object obj = ResourceManager.GetObject("icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap Night_Mode_Icon {
             get {
                 object obj = ResourceManager.GetObject("Night_Mode_Icon", resourceCulture);
@@ -107,6 +97,16 @@ namespace YeelightControlCenter.Properties {
             get {
                 object obj = ResourceManager.GetObject("Tohru", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon YCC {
+            get {
+                object obj = ResourceManager.GetObject("YCC", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
             }
         }
     }
